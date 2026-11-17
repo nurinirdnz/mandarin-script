@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>菲菲生病了！ · Feifei Is Sick! — A 4-Person Mandarin Script</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#fff8f0;
+    --ink:#2b2340;
+    --muted:#7a7090;
+    --jamilah:#d6336c; --jamilah-soft:#ffe3ee;
+    --feifei:#f08c00;  --feifei-soft:#fff1d6;
+    --riduan:#0c9c86;  --riduan-soft:#d8f7f1;
+    --jason:#3b5bdb;   --jason-soft:#e1e8ff;
+    --card:#ffffff;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; color:var(--ink);
+    font-family:"Nunito",system-ui,sans-serif;
+    background:
+      radial-gradient(circle at 10% 10%, #ffd6e7 0 120px, transparent 121px),
+      radial-gradient(circle at 92% 18%, #d0ebff 0 90px, transparent 91px),
+      radial-gradient(circle at 85% 85%, #fff3bf 0 140px, transparent 141px),
+      radial-gradient(circle at 5% 80%, #c3fae8 0 100px, transparent 101px),
+      var(--bg);
+    background-attachment:fixed;
+    min-height:100vh;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:28px 18px 80px}
+  header{text-align:center;margin-bottom:22px}
+  .badge{display:inline-block;background:#2b2340;color:#fff;border-radius:999px;padding:5px 14px;font-size:13px;letter-spacing:.5px;font-weight:700}
+  h1{font-family:"Baloo 2",cursive;font-size:clamp(34px,6vw,54px);margin:12px 0 0;line-height:1.05}
+  h1 .zh{font-family:"Noto Sans SC",sans-serif;display:block;font-size:.9em;
+    background:linear-gradient(90deg,var(--jamilah),var(--feifei),var(--riduan),var(--jason));
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{color:var(--muted);margin:8px 0 0;font-weight:600}
+  .scene{background:var(--card);border-radius:20px;padding:14px 18px;margin:18px auto 0;max-width:640px;
+    box-shadow:0 6px 0 #2b234014, 0 10px 30px #2b234012;font-size:15px;text-align:left}
+  .scene b{font-family:"Baloo 2";font-size:17px}
+
+  /* cast */
+  .cast{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:26px 0 18px}
+  @media (max-width:680px){.cast{grid-template-columns:repeat(2,1fr)}}
+  .member{background:var(--card);border-radius:20px;padding:14px 10px;text-align:center;border:3px solid var(--c);
+    box-shadow:0 6px 0 var(--c);transition:transform .15s;cursor:default}
+  .member:hover{transform:translateY(-4px) rotate(-1deg)}
+  .avatar{width:58px;height:58px;border-radius:50%;margin:0 auto 6px;display:grid;place-items:center;
+    background:var(--soft);font-size:30px;border:3px solid var(--c)}
+  .member .en{font-family:"Baloo 2";font-weight:800;font-size:20px;color:var(--c);line-height:1}
+  .member .cn{font-family:"Noto Sans SC";font-size:15px}
+  .member .py{font-size:12px;color:var(--muted)}
+  .member .role{font-size:12px;margin-top:4px;color:var(--muted)}
+  .member .count{display:inline-block;margin-top:6px;background:var(--soft);color:var(--c);font-weight:800;border-radius:999px;padding:2px 10px;font-size:12px}
+
+  /* toolbar */
+  .toolbar{position:sticky;top:8px;z-index:5;background:#ffffffee;backdrop-filter:blur(6px);
+    border-radius:18px;padding:10px 12px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;
+    box-shadow:0 4px 0 #2b234018,0 8px 24px #2b234014;margin-bottom:20px}
+  .btn{font-family:"Baloo 2";font-weight:700;font-size:15px;border:none;border-radius:999px;padding:7px 14px;cursor:pointer;
+    background:#f1ecf9;color:var(--ink);transition:transform .1s, background .2s}
+  .btn:hover{transform:translateY(-2px)}
+  .btn:active{transform:translateY(1px)}
+  .btn.on{background:var(--ink);color:#fff}
+  .btn.play{background:linear-gradient(90deg,var(--jamilah),var(--feifei));color:#fff}
+  .btn.stop{background:#ffe3e3;color:#c92a2a}
+  select{font-family:"Baloo 2";font-weight:700;font-size:15px;border-radius:999px;border:2px solid #e5def2;padding:5px 10px;background:#fff;color:var(--ink)}
+  .speed{display:flex;align-items:center;gap:6px;font-weight:700;font-size:14px}
+  input[type=range]{accent-color:var(--jason)}
+
+  /* acts */
+  .act{display:flex;align-items:center;gap:12px;margin:30px 0 14px}
+  .act span{font-family:"Baloo 2";font-weight:800;font-size:22px;white-space:nowrap}
+  .act small{font-family:"Noto Sans SC";color:var(--muted);font-size:15px}
+  .act::after{content:"";flex:1;height:3px;border-radius:3px;background:repeating-linear-gradient(90deg,#2b234033 0 8px,transparent 8px 14px)}
+
+  /* lines */
+  .line{display:flex;gap:12px;align-items:flex-start;margin:12px 0;animation:pop .4s ease both}
+  .line.right{flex-direction:row-reverse}
+  @keyframes pop{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
+  .line .ava{flex:0 0 46px;height:46px;border-radius:50%;display:grid;place-items:center;font-size:24px;
+    background:var(--soft);border:3px solid var(--c)}
+  .bubble{position:relative;background:var(--card);border-radius:20px;padding:12px 14px 12px 16px;max-width:78%;
+    border:2.5px solid var(--c);box-shadow:0 5px 0 var(--c);transition:transform .2s, box-shadow .2s, background .3s}
+  .line.right .bubble{text-align:left}
+  .bubble .who{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+  .bubble .who b{font-family:"Baloo 2";color:var(--c);font-size:15px}
+  .bubble .who .num{font-size:11px;font-weight:800;color:#fff;background:var(--c);border-radius:999px;padding:1px 8px}
+  .bubble .who .lc{font-size:11px;color:var(--muted);font-weight:700}
+  .sentence{display:flex;align-items:center;gap:10px}
+  .text{flex:1}
+  .pinyin{font-size:15px;color:var(--c);font-weight:700;letter-spacing:.2px}
+  .hanzi{font-family:"Noto Sans SC",sans-serif;font-size:24px;line-height:1.4;font-weight:500}
+  .english{font-size:14.5px;color:var(--muted);margin-top:6px;padding-top:6px;border-top:1.5px dashed #2b234022;font-style:italic}
+  .sbtns{display:flex;flex-direction:column;gap:6px}
+  .say{width:40px;height:40px;border-radius:50%;border:none;cursor:pointer;font-size:18px;
+    background:var(--soft);color:var(--c);display:grid;place-items:center;transition:transform .12s, background .2s}
+  .say:hover{transform:scale(1.12) rotate(-6deg);background:var(--c);color:#fff}
+  .say.slow{width:40px;height:30px;border-radius:12px;font-size:15px}
+  .line.speaking .bubble{transform:scale(1.025);background:var(--soft);box-shadow:0 8px 0 var(--c),0 0 0 6px color-mix(in srgb,var(--c) 22%,transparent)}
+  .line.speaking .ava{animation:bounce .5s infinite alternate}
+  @keyframes bounce{to{transform:translateY(-5px)}}
+  .hide-py .pinyin{display:none}
+  .hide-en .english{display:none}
+
+  /* practice mode */
+  .line.mine .bubble{outline:3px dashed var(--c);outline-offset:4px}
+  .line.mine.masked .hanzi,.line.mine.masked .pinyin{filter:blur(7px);cursor:pointer;user-select:none}
+  .line.mine.masked .hanzi::after{content:""}
+  .reveal-tip{display:none;font-size:12px;font-weight:800;color:var(--c)}
+  .line.mine.masked .reveal-tip{display:block}
+
+  /* vocab */
+  .vocab{background:var(--card);border-radius:24px;padding:18px;margin-top:40px;box-shadow:0 6px 0 #2b234018,0 10px 30px #2b234012}
+  .vocab h2{font-family:"Baloo 2";margin:0 0 4px;font-size:26px}
+  .vocab p{margin:0 0 14px;color:var(--muted);font-size:14px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{border:2px solid #e9e3f5;background:#fbf9ff;border-radius:14px;padding:6px 10px;cursor:pointer;transition:transform .12s,border-color .2s;text-align:left}
+  .chip:hover{transform:translateY(-2px) rotate(-1deg);border-color:var(--jason)}
+  .chip .h{font-family:"Noto Sans SC";font-size:18px;font-weight:700}
+  .chip .p{font-size:12px;color:var(--jason);font-weight:700}
+  .chip .e{font-size:12px;color:var(--muted)}
+  .chip .l{font-size:10px;font-weight:800;background:#2b2340;color:#fff;border-radius:6px;padding:0 5px;margin-left:4px;vertical-align:middle}
+  .note{font-size:13px;color:var(--muted);text-align:center;margin-top:16px}
+  .warn{display:none;background:#fff4e6;border:2px solid #ffc078;color:#a35200;border-radius:14px;padding:10px 14px;margin:0 0 14px;font-size:14px;font-weight:600}
+  footer{text-align:center;margin-top:30px;color:var(--muted);font-size:13px}
+  .confetti{position:fixed;top:-10px;font-size:22px;pointer-events:none;animation:fall linear forwards;z-index:50}
+  @keyframes fall{to{transform:translateY(110vh) rotate(540deg)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="badge">🎭 INTRODUCTORY MANDARIN 3 · ROLE-PLAY SCRIPT</span>
+    <h1><span class="zh">菲菲生病了！</span>Feifei Is Sick!</h1>
+    <p class="sub">Fēifēi shēngbìng le! · 4 characters · 10 lines each · vocabulary from Lessons 1–6</p>
+    <div class="scene">
+      <b>🎬 The scene:</b> A Saturday at Jamilah's place. Jason, Riduan and Feifei have come over for lunch — but Feifei isn't feeling well. The friends help her find the clinic, cook lunch together, and end up planning a holiday to Langkawi.
+    </div>
+  </header>
+
+  <section class="cast" id="cast"></section>
+
+  <div class="warn" id="warn">🔇 Your browser has no Chinese voice installed, so the 🔊 buttons may read with the wrong accent or stay silent. Chrome or Edge (desktop) and Safari (Mac/iPhone) usually include one.</div>
+
+  <div class="toolbar">
+    <button class="btn play" id="playAll">▶ Play whole scene</button>
+    <button class="btn stop" id="stopBtn">■ Stop</button>
+    <button class="btn on" id="tPy">Pinyin</button>
+    <button class="btn on" id="tEn">English</button>
+    <label class="speed">🐢<input type="range" id="rate" min="0.5" max="1.2" step="0.05" value="0.9">🐇</label>
+    <select id="role" title="Practice mode: hide one character's lines">
+      <option value="">🎤 Practice as…</option>
+      <option value="J">Jamilah</option>
+      <option value="F">Lin Feifei</option>
+      <option value="R">Riduan</option>
+      <option value="S">Jason</option>
+    </select>
+  </div>
+
+  <main id="script"></main>
+
+  <section class="vocab">
+    <h2>📚 Textbook words used in this script</h2>
+    <p>Tap any word to hear it. Tags show the lesson (L1–L6) where the word appears in the textbook's vocabulary list.</p>
+    <div class="chips" id="chips"></div>
+  </section>
+
+  <p class="note">🎤 <b>Practice mode:</b> pick a character above — their lines get blurred (tap to peek). In "Play whole scene", the app pauses on your lines so you can say them yourself.</p>
+  <footer>Made with vocabulary from <i>Bahasa Mandarin Permulaan 3 · Introductory Mandarin 3</i> (UiTM). 加油！Jiāyóu!</footer>
+</div>
+
+<script>
+const CAST = {
+  J:{en:"Jamilah", cn:"佳米拉", py:"Jiāmǐlā", emoji:"🧕", c:"var(--jamilah)", soft:"var(--jamilah-soft)", pitch:1.25, role:"The caring host", side:"left"},
+  F:{en:"Lin Feifei", cn:"林菲菲", py:"Lín Fēifēi", emoji:"🤒", c:"var(--feifei)", soft:"var(--feifei-soft)", pitch:1.45, role:"Sick, but still cheeky", side:"right"},
+  R:{en:"Riduan", cn:"礼端", py:"Lǐduān", emoji:"👦", c:"var(--riduan)", soft:"var(--riduan-soft)", pitch:0.85, role:"Clumsy in the kitchen", side:"left"},
+  S:{en:"Jason", cn:"杰森", py:"Jiésēn", emoji:"🤓", c:"var(--jason)", soft:"var(--jason-soft)", pitch:0.7, role:"Always overpacks", side:"right"},
+};
+
+const ACTS = {
+  1:["第一幕 · 菲菲不舒服","Act 1 · Feifei Feels Unwell 🤒"],
+  12:["第二幕 · 一起做饭","Act 2 · Cooking Together 🍳"],
+  21:["第三幕 · 去度假吧！","Act 3 · Let's Go on Holiday! 🏝️"],
+};
+
+const LINES = [
+ ["R","菲菲，你怎么了？你不舒服吗？","Fēifēi, nǐ zěnme le? Nǐ bù shūfu ma?","Feifei, what's wrong? Are you unwell?"],
+ ["F","我头痛，还有点发烧。","Wǒ tóutòng, hái yǒudiǎn fāshāo.","I have a headache, and a bit of a fever."],
+ ["J","你什么时候开始生病的？","Nǐ shénme shíhou kāishǐ shēngbìng de?","When did you start feeling sick?"],
+ ["F","三天前就开始了。我每天都很累。","Sān tiān qián jiù kāishǐ le. Wǒ měi tiān dōu hěn lèi.","It started three days ago. I've been tired every day."],
+ ["S","你应该去看医生。诊所离这里不远。","Nǐ yīnggāi qù kàn yīshēng. Zhěnsuǒ lí zhèlǐ bù yuǎn.","You should go and see a doctor. The clinic isn't far from here."],
+ ["F","好的。可是诊所在哪里？我没去过。","Hǎo de. Kěshì zhěnsuǒ zài nǎlǐ? Wǒ méi qùguo.","Okay. But where is the clinic? I've never been there."],
+ ["R","一直向前走，到了书店就向左转。","Yìzhí xiàng qián zǒu, dàole shūdiàn jiù xiàng zuǒ zhuǎn.","Go straight ahead, then turn left when you reach the bookstore."],
+ ["S","诊所就在便利店旁边。","Zhěnsuǒ jiù zài biànlìdiàn pángbiān.","The clinic is right beside the convenience store."],
+ ["J","别担心，我陪你去。","Bié dānxīn, wǒ péi nǐ qù.","Don't worry, I'll go with you."],
+ ["F","谢谢你，佳米拉！","Xièxie nǐ, Jiāmǐlā!","Thank you, Jamilah!"],
+ ["J","不谢。我们是好朋友嘛！","Búxiè. Wǒmen shì hǎo péngyou ma!","Don't mention it. We're best friends, after all!"],
+
+ ["R","菲菲，你要不要喝水？","Fēifēi, nǐ yào búyào hē shuǐ?","Feifei, do you want some water?"],
+ ["F","要，谢谢。我还没有吃午餐呢。","Yào, xièxie. Wǒ hái méiyǒu chī wǔcān ne.","Yes, thanks. I haven't even had lunch yet."],
+ ["S","我刚从超市回来，买了鸡肉和蔬菜。","Wǒ gāng cóng chāoshì huílái, mǎile jīròu hé shūcài.","I just got back from the supermarket — I bought chicken and vegetables."],
+ ["J","太好了！我们可以做番茄炒蛋。","Tài hǎo le! Wǒmen kěyǐ zuò fānqié chǎodàn.","Great! We can make scrambled eggs with tomatoes."],
+ ["R","我不会做饭，可是我会切菜！","Wǒ bú huì zuòfàn, kěshì wǒ huì qiē cài!","I can't cook, but I can chop vegetables!"],
+ ["F","哈哈，礼端，你上次切到手了！","Hāhā, Lǐduān, nǐ shàng cì qiēdào shǒu le!","Haha, Riduan — last time you cut your hand!"],
+ ["R","不好意思，那是我第一次嘛！","Bù hǎoyìsi, nà shì wǒ dì-yī cì ma!","Sorry — that was my first time!"],
+ ["S","做饭要多久？我饿了。","Zuòfàn yào duōjiǔ? Wǒ è le.","How long will the cooking take? I'm hungry."],
+ ["J","大概二十分钟。请坐，等一下。","Dàgài èrshí fēnzhōng. Qǐng zuò, děng yíxià.","About twenty minutes. Have a seat and wait a moment."],
+
+ ["S","菲菲，看了医生以后，你要多休息。","Fēifēi, kànle yīshēng yǐhòu, nǐ yào duō xiūxi.","Feifei, after you see the doctor, you need to get lots of rest."],
+ ["F","我知道。希望我早日康复。","Wǒ zhīdào. Xīwàng wǒ zǎorì kāngfù.","I know. I hope I recover soon."],
+ ["R","你好了以后，我们一起去度假，好吗？","Nǐ hǎole yǐhòu, wǒmen yìqǐ qù dùjià, hǎo ma?","Once you're better, let's all go on holiday together, okay?"],
+ ["J","好主意！我们去哪里？","Hǎo zhǔyi! Wǒmen qù nǎlǐ?","Good idea! Where shall we go?"],
+ ["S","我想去浮罗交怡。听说那里的风景很美。","Wǒ xiǎng qù Fúluójiāoyí. Tīngshuō nàlǐ de fēngjǐng hěn měi.","I want to go to Langkawi. I've heard the scenery there is beautiful."],
+ ["F","我去过浮罗交怡，非常好玩！","Wǒ qùguo Fúluójiāoyí, fēicháng hǎowán!","I've been to Langkawi — it's so much fun!"],
+ ["R","我们坐飞机去还是开车去？","Wǒmen zuò fēijī qù háishi kāichē qù?","Should we fly there or drive?"],
+ ["J","坐飞机比开车快多了。","Zuò fēijī bǐ kāichē kuài duō le.","Flying is much faster than driving."],
+ ["S","从吉隆坡国际机场到浮罗交怡要多久？","Cóng Jílóngpō Guójì Jīchǎng dào Fúluójiāoyí yào duōjiǔ?","How long does it take from KLIA to Langkawi?"],
+ ["F","大概一个小时。","Dàgài yí gè xiǎoshí.","About one hour."],
+ ["R","我们可以去浮潜，看珊瑚！","Wǒmen kěyǐ qù fúqián, kàn shānhú!","We can go snorkelling and see the coral!"],
+ ["J","我还要买纪念品给我妈妈。","Wǒ hái yào mǎi jìniànpǐn gěi wǒ māma.","I also want to buy souvenirs for my mum."],
+ ["S","我要拍很多照片！","Wǒ yào pāi hěn duō zhàopiàn!","I'm going to take loads of photos!"],
+ ["R","可是杰森，你的行李每次都太多了！","Kěshì Jiésēn, nǐ de xíngli měi cì dōu tài duō le!","But Jason, you always bring way too much luggage!"],
+ ["S","没办法，我喜欢带很多东西嘛。","Méi bànfǎ, wǒ xǐhuan dài hěn duō dōngxi ma.","Can't help it — I like bringing lots of stuff."],
+ ["R","我要先请假。我的老板可能不高兴。","Wǒ yào xiān qǐngjià. Wǒ de lǎobǎn kěnéng bù gāoxìng.","I have to apply for leave first. My boss might not be happy."],
+ ["J","你每天都加班，老板应该让你请假。","Nǐ měi tiān dōu jiābān, lǎobǎn yīnggāi ràng nǐ qǐngjià.","You work overtime every day — your boss should let you take leave."],
+ ["F","好了，吃完饭以后，我们就去诊所吧。","Hǎo le, chīwán fàn yǐhòu, wǒmen jiù qù zhěnsuǒ ba.","Alright — after we eat, let's go to the clinic."],
+ ["S","我开车送你们去！","Wǒ kāichē sòng nǐmen qù!","I'll drive you all there!"],
+ ["J","菲菲，别忘了带你的钱包！","Fēifēi, bié wàngle dài nǐ de qiánbāo!","Feifei, don't forget to bring your wallet!"],
+];
+
+const VOCAB = [
+ ["不舒服","bù shūfu","unwell","L2"],["头痛","tóutòng","headache","L2"],["发烧","fāshāo","have a fever","L2"],
+ ["生病","shēngbìng","get sick","L2"],["累","lèi","tired","L2"],["看医生","kàn yīshēng","see a doctor","L2"],
+ ["诊所","zhěnsuǒ","clinic","L2"],["水","shuǐ","water","L2"],["休息","xiūxi","rest","L2"],
+ ["希望","xīwàng","hope","L2"],["早日康复","zǎorì kāngfù","recover soon","L2"],["可能","kěnéng","probably","L2"],
+ ["带","dài","bring","L2"],["…前","… qián","… ago","L2"],
+ ["多久","duōjiǔ","how long","L1"],["大概","dàgài","approximately","L1"],["分钟","fēnzhōng","minute","L1"],
+ ["小时","xiǎoshí","hour","L1"],["超市","chāoshì","supermarket","L1"],["鸡肉","jīròu","chicken","L1"],
+ ["蔬菜","shūcài","vegetables","L1"],["番茄炒蛋","fānqié chǎodàn","tomato & egg","L1"],["切","qiē","cut","L1"],
+ ["午餐","wǔcān","lunch","L1"],["应该","yīnggāi","should","L1"],["先","xiān","first","L1"],["怎么","zěnme","how","L1"],
+ ["度假","dùjià","go on holiday","L3"],["浮罗交怡","Fúluójiāoyí","Langkawi","L3"],["风景","fēngjǐng","scenery","L3"],
+ ["飞机","fēijī","aeroplane","L3"],["开车","kāichē","drive","L3"],["快","kuài","fast","L3"],
+ ["吉隆坡国际机场","Jílóngpō Guójì Jīchǎng","KLIA","L3"],["浮潜","fúqián","snorkelling","L3"],["珊瑚","shānhú","coral","L3"],
+ ["纪念品","jìniànpǐn","souvenir","L3"],["照片","zhàopiàn","photo","L3"],["行李","xíngli","luggage","L3"],
+ ["第一次","dì-yī cì","first time","L3"],["等一下","děng yíxià","wait a moment","L3"],["…以后","… yǐhòu","after …","L3"],
+ ["离","lí","away from","L4"],["向前走","xiàng qián zǒu","go straight","L4"],["向左转","xiàng zuǒ zhuǎn","turn left","L4"],
+ ["书店","shūdiàn","bookstore","L4"],["便利店","biànlìdiàn","convenience store","L4"],["旁边","pángbiān","beside","L4"],
+ ["担心","dānxīn","worry","L4"],["陪","péi","accompany","L4"],["钱包","qiánbāo","wallet","L4"],["到","dào","arrive","L4"],
+ ["不好意思","bù hǎoyìsi","sorry","L5"],["送","sòng","send / drop off","L5"],
+ ["听说","tīngshuō","heard that","L6"],["非常","fēicháng","extremely","L6"],["比","bǐ","compared to","L6"],
+ ["刚","gāng","just","L6"],["请假","qǐngjià","apply for leave","L6"],["老板","lǎobǎn","boss","L6"],["加班","jiābān","work overtime","WL"],
+ ["去过","qùguo","have been to","WL"],["要不要","yào búyào","want or not","WL"],["还没有","hái méiyǒu","not yet","WL"],
+ ["请坐","qǐng zuò","please sit","WL"],["不谢","búxiè","don't mention it","WL"],["哪里","nǎlǐ","where","WL"],["远","yuǎn","far","WL"],
+];
+
+/* ---------- speech ---------- */
+let zhVoice = null;
+function pickVoice(){
+  const vs = speechSynthesis.getVoices();
+  const zh = vs.filter(v => /^zh[-_](CN|cn)|cmn/i.test(v.lang)) .concat(vs.filter(v=>/^zh/i.test(v.lang)));
+  const pref = ["Xiaoxiao","Google 普通话","Tingting","Ting-Ting","Yunxi","Xiaoyi","Huihui","Lili"];
+  zhVoice = null;
+  for (const p of pref){ const v = zh.find(v=>v.name.includes(p)); if(v){zhVoice=v;break;} }
+  if(!zhVoice) zhVoice = zh[0] || null;
+  document.getElementById('warn').style.display = (vs.length && !zhVoice) ? 'block' : 'none';
+}
+if ('speechSynthesis' in window){
+  pickVoice();
+  speechSynthesis.onvoiceschanged = pickVoice;
+} else {
+  document.getElementById('warn').textContent = "🔇 This browser doesn't support speech. Try Chrome, Edge or Safari.";
+  document.getElementById('warn').style.display='block';
+}
+const rateEl = document.getElementById('rate');
+function speak(text, {pitch=1, slow=false, onend}={}){
+  if(!('speechSynthesis' in window)) { onend && onend(); return; }
+  const u = new SpeechSynthesisUtterance(text.replace(/…/g,''));
+  u.lang = 'zh-CN';
+  if (zhVoice) u.voice = zhVoice;
+  u.rate = slow ? 0.55 : parseFloat(rateEl.value);
+  u.pitch = pitch;
+  u.onend = () => onend && onend();
+  u.onerror = () => onend && onend();
+  speechSynthesis.speak(u);
+}
+
+/* ---------- build cast ---------- */
+const castEl = document.getElementById('cast');
+for (const k of ["J","F","R","S"]){
+  const m = CAST[k], n = LINES.filter(l=>l[0]===k).length;
+  castEl.insertAdjacentHTML('beforeend',`
+   <div class="member" style="--c:${m.c};--soft:${m.soft}">
+     <div class="avatar">${m.emoji}</div>
+     <div class="en">${m.en}</div>
+     <div class="cn">${m.cn}</div>
+     <div class="py">${m.py}</div>
+     <div class="role">${m.role}</div>
+     <span class="count">${n} lines</span>
+   </div>`);
+}
+
+/* ---------- build script ---------- */
+const scriptEl = document.getElementById('script');
+const counters = {J:0,F:0,R:0,S:0};
+LINES.forEach((l,i)=>{
+  const [k,hz,py,en] = l, m = CAST[k], no=i+1;
+  counters[k]++;
+  if (ACTS[no]) scriptEl.insertAdjacentHTML('beforeend',`<div class="act"><span>${ACTS[no][1]}</span><small>${ACTS[no][0]}</small></div>`);
+  scriptEl.insertAdjacentHTML('beforeend',`
+   <div class="line ${m.side==='right'?'right':''}" data-i="${i}" data-k="${k}" style="--c:${m.c};--soft:${m.soft};animation-delay:${Math.min(i*0.03,1)}s">
+     <div class="ava" title="${m.en}">${m.emoji}</div>
+     <div class="bubble">
+       <div class="who"><span class="num">#${no}</span><b>${m.en} ${m.cn}</b><span class="lc">line ${counters[k]}/10</span></div>
+       <div class="sentence">
+         <div class="text">
+           <div class="pinyin">${py}</div>
+           <div class="hanzi">${hz}</div>
+           <div class="reveal-tip">👆 your line — tap to peek</div>
+         </div>
+         <div class="sbtns">
+           <button class="say" data-act="say" title="Listen">🔊</button>
+           <button class="say slow" data-act="slow" title="Listen slowly">🐢</button>
+         </div>
+       </div>
+       <div class="english">${en}</div>
+     </div>
+   </div>`);
+});
+
+function setSpeaking(i){
+  document.querySelectorAll('.line.speaking').forEach(e=>e.classList.remove('speaking'));
+  if(i==null) return;
+  const el = document.querySelector(`.line[data-i="${i}"]`);
+  if(el){ el.classList.add('speaking'); el.scrollIntoView({behavior:'smooth',block:'center'}); }
+}
+
+scriptEl.addEventListener('click', e=>{
+  const b = e.target.closest('button[data-act]');
+  const line = e.target.closest('.line');
+  if(!line) return;
+  if(!b){ // tap to reveal in practice mode
+    if(line.classList.contains('mine')) line.classList.toggle('masked');
+    return;
+  }
+  stopAll();
+  const i = +line.dataset.i, [k,hz] = LINES[i];
+  setSpeaking(i);
+  speak(hz,{pitch:CAST[k].pitch, slow:b.dataset.act==='slow', onend:()=>setSpeaking(null)});
+});
+
+/* ---------- play all ---------- */
+let playing=false, timer=null;
+function stopAll(){
+  playing=false; clearTimeout(timer);
+  if('speechSynthesis' in window) speechSynthesis.cancel();
+  setSpeaking(null);
+}
+function playFrom(i){
+  if(!playing) return;
+  if(i>=LINES.length){ playing=false; setSpeaking(null); confetti(); return; }
+  const [k,hz] = LINES[i];
+  setSpeaking(i);
+  const next = ()=>{ if(playing) timer=setTimeout(()=>playFrom(i+1),450); };
+  if(k===roleEl.value){
+    // learner's turn: pause long enough to say it
+    timer = setTimeout(()=>{ const el=document.querySelector(`.line[data-i="${i}"]`); el && el.classList.remove('masked'); next(); }, 1500 + hz.length*420);
+  } else {
+    speak(hz,{pitch:CAST[k].pitch, onend:next});
+  }
+}
+document.getElementById('playAll').onclick=()=>{ stopAll(); playing=true; playFrom(0); };
+document.getElementById('stopBtn').onclick=stopAll;
+
+/* ---------- toggles ---------- */
+const tPy=document.getElementById('tPy'), tEn=document.getElementById('tEn');
+tPy.onclick=()=>{ tPy.classList.toggle('on'); scriptEl.classList.toggle('hide-py'); };
+tEn.onclick=()=>{ tEn.classList.toggle('on'); scriptEl.classList.toggle('hide-en'); };
+
+const roleEl=document.getElementById('role');
+roleEl.onchange=()=>{
+  document.querySelectorAll('.line').forEach(el=>{
+    const mine = el.dataset.k===roleEl.value;
+    el.classList.toggle('mine',mine);
+    el.classList.toggle('masked',mine);
+  });
+};
+
+/* ---------- vocab ---------- */
+const chips=document.getElementById('chips');
+VOCAB.forEach(([h,p,e,l])=>{
+  const c=document.createElement('button');
+  c.className='chip';
+  c.innerHTML=`<div class="h">${h}<span class="l">${l==='WL'?'Word list':l}</span></div><div class="p">${p}</div><div class="e">${e}</div>`;
+  c.onclick=()=>{ stopAll(); speak(h); };
+  chips.appendChild(c);
+});
+
+/* ---------- confetti at the end ---------- */
+function confetti(){
+  const items=["🎉","🏝️","🐠","✈️","🍳","💊","⭐","🎊"];
+  for(let n=0;n<40;n++){
+    const s=document.createElement('div');
+    s.className='confetti';
+    s.textContent=items[n%items.length];
+    s.style.left=Math.random()*100+'vw';
+    s.style.animationDuration=(2+Math.random()*2.5)+'s';
+    s.style.animationDelay=(Math.random()*0.8)+'s';
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),5500);
+  }
+}
+</script>
+</body>
+</html>
