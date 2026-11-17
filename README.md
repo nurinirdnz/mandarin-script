@@ -6,7 +6,7 @@
 
 ![Characters](https://img.shields.io/badge/characters-4-7950f2?style=for-the-badge) ![Lines](https://img.shields.io/badge/lines-10_each-f08c00?style=for-the-badge) ![Level](https://img.shields.io/badge/Introductory_Mandarin-3-0c9c86?style=for-the-badge) ![Lessons](https://img.shields.io/badge/vocab-Lessons_1–6-3b5bdb?style=for-the-badge)
 
-### ▶️ [**Open the interactive script (with audio)**]([https://nurinirdnz.github.io/mandarin-script/](https://nurinirdnz.github.io/mandarin-script/mandarin_script.html))
+### ▶️ [**Open the interactive script (with audio)**](https://nurinirdnz.github.io/mandarin-script/mandarin_script.html)
 
 </div>
 
